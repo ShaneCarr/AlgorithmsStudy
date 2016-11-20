@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Percolation {
 
+    Random m = new Random(System.currentTimeMillis());
     private int N = 0; 
     public GridUnionData[][] Data;
 
@@ -63,21 +64,26 @@ public class Percolation {
         SiteId s = new SiteId(row, column);
         SiteId sn = new SiteId(newrow, newcolumn);
 
-        if (newrow >= 0 && newcolumn >= 0) {
-            // if we are greter tahn zero
-            if (this.Data[newrow][newcolumn].State == SiteState.Open) {
-                connected(s, sn);
+        try
+        {
+            if (newrow >= 0 && newcolumn >= 0 && newrow < N && newcolumn < N) {
+                // if we are greter tahn zero
+                if (this.Data[newrow][newcolumn].State == SiteState.Open) {
+                    union(s, sn);
+                }
             }
+        }
+        catch(Exception e)
+        {
+            System.out.println ("newrow " + newrow + "newcolumn" + newcolumn);
         }
     }
     
     public SiteId GetNextRandomSite()
     {
-        Random m = new Random(System.currentTimeMillis());
-        
-        
-        int column = m.nextInt(this.N-1);
-        int row = m.nextInt(this.N-1);
+        // I would od n-1 but java is darnd strange here
+        int column = m.nextInt(this.N);
+        int row = m.nextInt(this.N);
         
         // no poit in returning this.
         while(this.Data[row][column].State == SiteState.Open)
@@ -135,12 +141,15 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
-        Percolation p = new Percolation(100);
+        Percolation p = new Percolation(5);
         while (!p.percolates())
         {
             SiteId s= p.GetNextRandomSite();
             p.open(s.Row, s.Column);
+            System.out.println("opening Row " + s.Row + "Column " + s.Column);
         }
+        
+        System.out.println("Complete");
     }
 
     public boolean connected(SiteId p, SiteId q) {
@@ -184,7 +193,7 @@ public class Percolation {
 
     protected RootResult rootHelper(SiteId id, int depth) {
         // point to itself so we are done. this is a root.
-        if (this.Data[id.Row][id.Column].equals(id)) {
+        if (this.Data[id.Row][id.Column].ParentId.Equals(id)) {
             depth++;
             return new RootResult(id, depth);
         }
