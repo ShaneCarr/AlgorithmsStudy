@@ -24,4 +24,10 @@ public class SiteId {
     {
         return this.Row == id.Row && this.Column == id.Column;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "Row: " + this.Row + " column: " + this.Column;
+    }
 }

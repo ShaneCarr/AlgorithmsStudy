@@ -131,6 +131,8 @@ public class Percolation {
 
                 // can quit as soon as we find one.
                 if (connected(lastItems.Id, firstItem.Id)) {
+                    System.out.println("Sites Start" + firstItem + "Site End" + lastItems);
+                    
                     return true;
                 }
             }
@@ -141,7 +143,7 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
-        Percolation p = new Percolation(5);
+        Percolation p = new Percolation(100);
         while (!p.percolates())
         {
             SiteId s= p.GetNextRandomSite();
@@ -150,6 +152,8 @@ public class Percolation {
         }
         
         System.out.println("Complete");
+        
+        p.PrintData();
     }
 
     public boolean connected(SiteId p, SiteId q) {
@@ -203,4 +207,19 @@ public class Percolation {
         // go to the parent
         return rootHelper(this.Data[id.Row][id.Column].ParentId /* next level */, depth);
     }
+    
+    public void PrintData()
+    {
+        for(int r=0;r<this.N;r++)
+        {
+            for(int c =0 ; c < this.N; c++)
+            {
+                System.out.print(this.Data[r][c]);
+                System.out.print(",  ");
+            }
+            
+            System.out.println();
+        }
+    }
+    
 }

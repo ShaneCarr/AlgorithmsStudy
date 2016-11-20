@@ -13,4 +13,10 @@ public class GridUnionData {
     public SiteId ParentId;
     public SiteId Id;
     public SiteState State;
+    
+   @Override
+   public String toString()
+   {
+       return "Row: " + Id.Row + " Column: " + Id.Column + " SiteState: " + this.State.toString();
+   }
 }
