@@ -35,6 +35,9 @@ public class Percolation {
 
     // open site (row, col) if it is not open already
     public void open(int row, int col) {
+        row--;
+        col--;
+        this.CheckArg(row, col);
         // open site (row, col) if it is not open already
         // this would call the "connected code for the  code around if they are open.
         this.Data[row][col].State = SiteState.Open;
@@ -59,54 +62,24 @@ public class Percolation {
 
     }
 
-    // check and connect to the adjacent as defined by the problem.
-    private void checkAndConnect(int row, int column, int newrow, int newcolumn) {
-        SiteId s = new SiteId(row, column);
-        SiteId sn = new SiteId(newrow, newcolumn);
-
-        try
-        {
-            if (newrow >= 0 && newcolumn >= 0 && newrow < N && newcolumn < N) {
-                // if we are greter tahn zero
-                if (this.Data[newrow][newcolumn].State == SiteState.Open) {
-                    union(s, sn);
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println ("newrow " + newrow + "newcolumn" + newcolumn);
-        }
-    }
-    
-    public SiteId GetNextRandomSite()
-    {
-        // I would od n-1 but java is darnd strange here
-        int column = m.nextInt(this.N);
-        int row = m.nextInt(this.N);
-        
-        // no poit in returning this.
-        while(this.Data[row][column].State == SiteState.Open)
-        {
-            column = m.nextInt(this.N-1);
-            row = m.nextInt(this.N-1);
-        }
-            
-        SiteId s = new SiteId(row, column);
-        return s;
-    }
 
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
+        row--;
+        col--;
+        this.CheckArg(row, col);
         return this.Data[row][col].State == SiteState.Open;
 
     }
 
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
+        row--;
+        col--;
         // A full site is an open site that can be connected to an open site in the top row via a chain of neighboring 
         // (left, right, up, down) open sites. We say the system percolates if there is a full site in the bottom row. 
-
+        this.CheckArg(row, col);
+        
         // check if is connected to for all the "n elements in row 0"
         SiteId s = new SiteId(row, col);
 
@@ -160,7 +133,23 @@ public class Percolation {
         return root(p).dataItem.Equals(root(q).dataItem);
     }
 
-    public void union(SiteId p, SiteId q) {
+
+    
+    public void PrintData()
+    {
+        for(int r=0;r<this.N;r++)
+        {
+            for(int c =0 ; c < this.N; c++)
+            {
+                System.out.print(this.Data[r][c]);
+                System.out.print(",  ");
+            }
+            
+            System.out.println();
+        }
+    }
+    
+        private void union(SiteId p, SiteId q) {
         RootResult rootP = root(p);
         RootResult rootQ = root(q);
 
@@ -177,7 +166,47 @@ public class Percolation {
         }
     }
 
-    public RootResult root(SiteId id) {
+        
+    // check and connect to the adjacent as defined by the problem.
+    private void checkAndConnect(int row, int column, int newrow, int newcolumn) {
+        this.CheckArg(row, column);
+   //     this.CheckArg(newrow, newcolumn);
+        SiteId s = new SiteId(row, column);
+        SiteId sn = new SiteId(newrow, newcolumn);
+
+        try
+        {
+            if (newrow >= 0 && newcolumn >= 0 && newrow < N && newcolumn < N) {
+                // if we are greter tahn zero
+                if (this.Data[newrow][newcolumn].State == SiteState.Open) {
+                    union(s, sn);
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println ("newrow " + newrow + "newcolumn" + newcolumn);
+        }
+    }
+    
+    private SiteId GetNextRandomSite()
+    {
+        // I would od n-1 but java is darnd strange here
+        int column = m.nextInt(this.N);
+        int row = m.nextInt(this.N);
+        
+        // no poit in returning this.
+        while(this.Data[row][column].State == SiteState.Open)
+        {
+            column = m.nextInt(this.N-1);
+            row = m.nextInt(this.N-1);
+        }
+            
+        SiteId s = new SiteId(row, column);
+        return s;
+    }
+    
+    private RootResult root(SiteId id) {
         int debth = 0;
         GridUnionData curr = this.Data[id.Row][id.Column];
 
@@ -195,7 +224,7 @@ public class Percolation {
         return finalRoot;
     }
 
-    protected RootResult rootHelper(SiteId id, int depth) {
+    private RootResult rootHelper(SiteId id, int depth) {
         // point to itself so we are done. this is a root.
         if (this.Data[id.Row][id.Column].ParentId.Equals(id)) {
             depth++;
@@ -208,18 +237,11 @@ public class Percolation {
         return rootHelper(this.Data[id.Row][id.Column].ParentId /* next level */, depth);
     }
     
-    public void PrintData()
+    private void CheckArg(int row, int column)
     {
-        for(int r=0;r<this.N;r++)
+        if(row < 0 || row > N-1 || column < 0 || column > N-1 )
         {
-            for(int c =0 ; c < this.N; c++)
-            {
-                System.out.print(this.Data[r][c]);
-                System.out.print(",  ");
-            }
-            
-            System.out.println();
+            throw new java.lang.IndexOutOfBoundsException("arg");
         }
     }
-    
 }
