@@ -124,7 +124,7 @@ public class Percolation {
             System.out.println("opening Row " + s.Row + "Column " + s.Column);
         }
         
-        System.out.println("Complete");
+        System.out.println("\\[36mblaComplete");
         
         p.PrintData();
     }
