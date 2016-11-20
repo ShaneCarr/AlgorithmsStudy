@@ -136,7 +136,11 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args) {
         Percolation p = new Percolation(100);
-        
+        while (!p.percolates())
+        {
+            SiteId s= p.GetNextRandomSite();
+            p.open(s.Row, s.Column);
+        }
     }
 
     public boolean connected(SiteId p, SiteId q) {
