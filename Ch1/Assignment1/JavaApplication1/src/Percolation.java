@@ -104,7 +104,7 @@ public class Percolation {
 
                 // can quit as soon as we find one.
                 if (connected(lastItems.Id, firstItem.Id)) {
-                    System.out.println("Sites Start" + firstItem + "Site End" + lastItems);
+                    System.out.println("Sites Start " + firstItem + "Site End" + lastItems);
                     
                     return true;
                 }
