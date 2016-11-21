@@ -5,9 +5,6 @@ public class PercolationStats {
     private Percolation pr;
     private double[] fractions;
 
-    /**
-     * Performs T independent computational experiments on an N-by-N grid.
-     */
     public PercolationStats(int N, int T) {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("Given N <= 0 || T <= 0");
