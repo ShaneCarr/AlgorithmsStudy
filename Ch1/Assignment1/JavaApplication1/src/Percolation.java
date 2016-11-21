@@ -61,8 +61,7 @@ public class Percolation {
         checkAndConnect(row, col, row, lowerColumn);
 
     }
-
-
+    
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
         row--;
@@ -129,13 +128,11 @@ public class Percolation {
         p.PrintData();
     }
 
-    public boolean connected(SiteId p, SiteId q) {
+    private boolean connected(SiteId p, SiteId q) {
         return root(p).dataItem.Equals(root(q).dataItem);
     }
-
-
-    
-    public void PrintData()
+  
+    private void PrintData()
     {
         for(int r=0;r<this.N;r++)
         {
@@ -149,7 +146,7 @@ public class Percolation {
         }
     }
     
-        private void union(SiteId p, SiteId q) {
+    private void union(SiteId p, SiteId q) {
         RootResult rootP = root(p);
         RootResult rootQ = root(q);
 
@@ -165,8 +162,7 @@ public class Percolation {
             this.Data[rootQ.dataItem.Row][rootQ.dataItem.Column].ParentId.Column = this.Data[rootP.dataItem.Row][rootP.dataItem.Column].Id.Column;
         }
     }
-
-        
+ 
     // check and connect to the adjacent as defined by the problem.
     private void checkAndConnect(int row, int column, int newrow, int newcolumn) {
         this.CheckArg(row, column);
